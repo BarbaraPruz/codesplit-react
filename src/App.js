@@ -4,18 +4,37 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
+import Loadable from 'react-loadable';
 
 import './App.css';
 
-function Loading (props) {
-  return (
-    <div>
-      <h2>Loading...</h2>
-    </div>
-  )
+
+const Loader = (props) => {
+	if (props.error) {
+		return <div>Oh no, something went wrong!</div>;
+	} else if (props.delay) {
+		return <h2>Loading...</h2>
+	} else {
+		return null;
+	}
 }
-const LazyCharts1 = React.lazy(() => import('./components/Charts1'))
-const LazyCharts2 = React.lazy(() => import('./components/Charts2'))
+
+const Charts1 = Loadable({
+  loader: () => import('./components/Charts1'),
+	loading: Loader,
+	delay: 300  
+})
+const Charts2 = Loadable({
+	loader: () => import('./components/Charts2'),
+	loading: Loader,
+	delay: 300  
+})
+const SubChild1 = Loadable({
+	loader: () => import('./components/SubChild1'),
+	loading: Loader,
+	delay: 300  
+})
+
 function App() {
   return (
     <div className="App">
@@ -29,10 +48,9 @@ function App() {
           <hr />        
         </header>
         <section>
-          <React.Suspense fallback={<Loading />}>
-            <Route path='/charts1' component={LazyCharts1} />
-            <Route path='/charts2' component={LazyCharts2} />     
-          </React.Suspense>                 
+            <Route path='/charts1' component={Charts1} />
+            <Route path='/charts1/subchild1' component={SubChild1} />           
+            <Route path='/charts2' component={Charts2} />                   
         </section>
       </Router>
     </div>

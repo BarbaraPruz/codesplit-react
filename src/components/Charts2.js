@@ -1,11 +1,12 @@
 import React from 'react';
-
+import { connect } from "react-redux";
 import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries} from 'react-vis';
 
 function Charts2(props) {
     return (
         <div>
             <h1>Charts2</h1>
+            <h2>Count {props.count}</h2>
             <XYPlot width={300} height={300}>
                 <HorizontalGridLines />
                 <LineSeries
@@ -20,4 +21,8 @@ function Charts2(props) {
         </div>
     )
 }
-export default Charts2;
+
+const mapStateToProps = state => ({
+    count: state.counts.count
+  });
+export default connect(mapStateToProps)(Charts2);
